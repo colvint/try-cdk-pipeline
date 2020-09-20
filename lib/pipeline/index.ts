@@ -4,6 +4,7 @@ import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core'
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines"
 import { AppConfig } from '../config'
 import { StageOne } from './stages/stage-one'
+import { ShellScriptAction } from '@aws-cdk/pipelines'
 
 /**
  * The stack that defines the application pipeline
@@ -13,6 +14,7 @@ export class CdkpipelinesDemoPipelineStack extends Stack {
     super(scope, id, props)
 
     const sourceArtifact = new codepipeline.Artifact()
+
     const cloudAssemblyArtifact = new codepipeline.Artifact()
 
     const pipeline = new CdkPipeline(this, 'Pipeline', {
@@ -39,8 +41,20 @@ export class CdkpipelinesDemoPipelineStack extends Stack {
       }),
     })
 
-    pipeline.addApplicationStage(new StageOne(this, 'StageOne', {
+    const stageOne = new StageOne(this, 'StageOne', {
       env: AppConfig.AWS
+    })
+
+    const pipelinedStageOne = pipeline.addApplicationStage(stageOne)
+
+    pipelinedStageOne.addActions(new ShellScriptAction({
+      actionName: 'RunIntegrationTests',
+      useOutputs: {
+        ENDPOINT_URL: pipeline.stackOutput(stageOne.urlOutput),
+      },
+      commands: [
+        `curl -Ssf $ENDPOINT_URL`
+      ]
     }))
   }
 }
