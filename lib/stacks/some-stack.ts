@@ -13,7 +13,7 @@ export class SomeStack extends Stack {
     const handler = new lambda.Function(this, 'Lambda', {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'handler.handler',
-      code: lambda.Code.fromAsset(path.resolve(__dirname, 'lambdas')),
+      code: lambda.Code.fromAsset(path.resolve(__dirname, '..', 'lambdas')),
     })
 
     const gw = new apigw.LambdaRestApi(this, 'Gateway', {

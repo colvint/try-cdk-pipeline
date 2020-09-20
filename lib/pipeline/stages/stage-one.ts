@@ -5,14 +5,14 @@ import { SomeStack } from '../../stacks/some-stack'
  * Deployable unit of web service app
  */
 export class StageOne extends Stage {
-  public readonly urlOutput: CfnOutput;
+  public readonly urlOutput: CfnOutput
 
   constructor(scope: Construct, id: string, props?: StageProps) {
-    super(scope, id, props);
+    super(scope, id, props)
 
-    const service = new SomeStack(this, 'WebService');
+    const service = new SomeStack(this, 'WebService')
 
-    // Expose CdkpipelinesDemoStack's output one level higher
-    this.urlOutput = service.urlOutput;
+    // Expose StageOne's output one level higher
+    this.urlOutput = service.urlOutput
   }
 }
