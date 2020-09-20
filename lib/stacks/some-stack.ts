@@ -17,7 +17,7 @@ export class SomeStack extends Stack {
     })
 
     const gw = new apigw.LambdaRestApi(this, 'Gateway', {
-      description: 'Endpoint for a simple Lambda-powered web service',
+      description: 'Endpoint for a simple lambda-powered web service',
       handler,
     })
 
