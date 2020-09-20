@@ -2,6 +2,8 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline'
 import * as codepipelineActions from '@aws-cdk/aws-codepipeline-actions'
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core'
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines"
+import { AppConfig } from '../config'
+import { StageOne } from './stages/stage-one'
 
 /**
  * The stack that defines the application pipeline
@@ -37,7 +39,8 @@ export class CdkpipelinesDemoPipelineStack extends Stack {
       }),
     })
 
-    // This is where we add the application stages
-    // ...
+    pipeline.addApplicationStage(new StageOne(this, 'StageOne', {
+      env: AppConfig.AWS
+    }))
   }
 }
